@@ -41,7 +41,7 @@ public class Squares extends Window {
         if (dragSquare == null) {
             sizeSquare.resize(x, y);
         } else {
-            sizeSquare.move(x - mouseDown.x, y - mouseDown.y);
+            dragSquare.move(x - mouseDown.x, y - mouseDown.y);
         }
         repaint();
     }
