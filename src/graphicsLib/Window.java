@@ -16,7 +16,7 @@ public class Window extends JPanel
     public static Dimension PREF_SIZE = new Dimension(500,400);
 
     public Window(String t, int w, int h){
-        TITLE = t; PREF_SIZE = new Dimension(w,h);
+        TITLE = t; PREF_SIZE = new Dimension(w, h);
     }
 
     public Dimension getPreferredSize() {return PREF_SIZE;}
