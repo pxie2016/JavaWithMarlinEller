@@ -11,7 +11,7 @@ import music.UC;
 public class PaintInk extends Window {
 
     public static Ink.List inkList = new Ink.List();
-    static { inkList.add(new Ink()); }
+    // static { inkList.add(new Ink()); }
 
     public PaintInk() {
         super("PaintInk", UC.WINDOW_WIDTH, UC.WINDOW_HEIGHT);
@@ -21,7 +21,7 @@ public class PaintInk extends Window {
     public void paintComponent(Graphics g) {
         G.fillBackground(g);
         inkList.show(g);
-        g.drawString("Size:" + inkList.size(), 100, 100);
+        // g.drawString("Size:" + inkList.size(), 100, 100);
         Ink.BUFFER.show(g);
     }
 

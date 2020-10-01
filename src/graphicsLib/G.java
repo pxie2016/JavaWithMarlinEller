@@ -23,6 +23,7 @@ public class G {
     public static class V {
 
         public int x, y;
+        public static Transform T = new Transform();
 
         public V(int x, int y) {
             set(x, y);
@@ -34,8 +35,35 @@ public class G {
         }
 
         public void set(V v) { this.set(v.x, v.y); }
-
         public void add(V v) { x += v.x; y += v.y; }
+
+        // (x', y') = (x * n / d + dx, y * n / d + dy)
+        public void setT(V v) {set(v.tx(), v.ty()); }
+        public int tx() {return x * T.n / T.d + T.dx; }
+        public int ty() {return y * T.n / T.d + T.dy; }
+        public static class Transform {
+            int dx, dy, n, d;
+
+            public void setScale(int oW, int oH, int nW, int nH) {
+                n = (nW > nH) ? nW : nH;
+                d = (oW > oH) ? oW : oH;
+            }
+            // x' = (x - oX - oW/2) * n/d + nX + nW/2
+            // x' = x * n/d
+            public int setOff(int oX, int oW, int nX, int nW) {
+                return nX + nW/2 - (oX + oW/2) * n/d;
+            }
+            public void set(VS oVS, VS nVS) {
+                setScale(oVS.size.x, oVS.size.y, nVS.size.x, nVS.size.y);
+                dx = setOff(oVS.loc.x, oVS.size.x, nVS.loc.x, nVS.size.x);
+                dy = setOff(oVS.loc.y, oVS.size.y, nVS.loc.y, nVS.size.y);
+            }
+            public void set(BBox from, VS to) {
+                setScale(from.h.size(), from.v.size(), to.size.x, to.size.y);
+                dx = setOff(from.h.lo, from.h.size(), to.loc.x, to.size.x);
+                dy = setOff(from.v.lo, from.v.size(), to.loc.y, to.size.y);
+            }
+        }
     }
 
     // --- Vector & Size
@@ -109,7 +137,21 @@ public class G {
                 // Drawing from previous point to current
                 g.drawLine(points[i-1].x, points[i-1].y, points[i].x, points[i].y);
             }
+            drawNDots(g, n);
         }
         public void draw(Graphics g) { drawN(g, points.length); }
+
+        public void drawNDots(Graphics g, int n) {
+            g.setColor(Color.BLUE);
+            for (int i = 0; i < n; i++) {
+                g.drawOval(points[i].x - 2, points[i].y - 2, 4, 4);
+            }
+        }
+
+        public void transform() {
+            for (int i = 0; i < points.length; i++) {
+                points[i].setT(points[i]);
+            }
+        }
     }
 }
