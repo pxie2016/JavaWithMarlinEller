@@ -5,13 +5,14 @@ import graphicsLib.Window;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-import music.Ink;
+import reaction.*;
 import music.UC;
+import reaction.Shape;
 
 public class PaintInk extends Window {
 
     public static Ink.List inkList = new Ink.List();
-    // static { inkList.add(new Ink()); }
+    public static Shape.Prototype.List plist = new Shape.Prototype.List();
 
     public PaintInk() {
         super("PaintInk", UC.WINDOW_WIDTH, UC.WINDOW_HEIGHT);
@@ -21,8 +22,14 @@ public class PaintInk extends Window {
     public void paintComponent(Graphics g) {
         G.fillBackground(g);
         inkList.show(g);
-        // g.drawString("Size:" + inkList.size(), 100, 100);
         Ink.BUFFER.show(g);
+        if (inkList.size() > 1) {
+            int last = inkList.size() - 1;
+            int dist = inkList.get(last).norm.dist(inkList.get(last - 1).norm);
+            g.setColor(dist > UC.NO_MATCH_DIST ? Color.RED : Color.BLACK);
+            g.drawString("Dist:" + dist, 600, 60);
+        }
+        plist.show(g);
     }
 
     @Override
@@ -32,7 +39,20 @@ public class PaintInk extends Window {
     public void mouseDragged(MouseEvent me) { Ink.BUFFER.drag(me.getX(), me.getY()); repaint(); }
 
     @Override
-    public void mouseReleased(MouseEvent me) { inkList.add(new Ink()); repaint(); }
+    public void mouseReleased(MouseEvent me) {
+        Ink ink = new Ink();
+        Shape.Prototype proto;
+        inkList.add(new Ink());
+        if (plist.bestDist(ink.norm) < UC.NO_MATCH_DIST) {
+            proto = plist.bestMatch;
+            proto.blend(ink.norm);
+        } else {
+            proto = new Shape.Prototype();
+            plist.add(proto);
+        }
+        ink.norm = proto;
+        repaint();
+    }
 
 
 }

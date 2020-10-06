@@ -37,6 +37,10 @@ public class G {
         public void set(V v) { this.set(v.x, v.y); }
         public void add(V v) { x += v.x; y += v.y; }
 
+        public void blend(V v, int k) {
+            set((k * x + v.x) / (k + 1), (k * y + v.y) / (k + 1));
+        }
+
         // (x', y') = (x * n / d + dx, y * n / d + dy)
         public void setT(V v) {set(v.tx(), v.ty()); }
         public int tx() {return x * T.n / T.d + T.dx; }

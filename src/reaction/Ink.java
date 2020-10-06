@@ -1,6 +1,9 @@
-package music;
+package reaction;
 
 import graphicsLib.G;
+import music.I;
+import music.UC;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -31,6 +34,21 @@ public class Ink implements I.Show {
             G.V.T.set(normBox, vs);
             for (int i = 1; i < K; i++) {
                 g.drawLine(points[i-1].tx(), points[i-1].ty(), points[i].tx(), points[i].ty());
+            }
+        }
+
+        public int dist(Norm n) {
+            int result = 0;
+            for (int i = 0; i < K; i++) {
+                int dx = points[i].x - n.points[i].x, dy = points[i].y - n.points[i].y;
+                result += dx * dx + dy * dy;
+            }
+            return result;
+        }
+
+        public void blend(Norm n, int nBlend) {
+            for (int i = 0; i < K; i++) {
+                points[i].blend(n.points[i], nBlend);
             }
         }
     }
