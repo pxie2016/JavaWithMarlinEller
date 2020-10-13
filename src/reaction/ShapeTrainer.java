@@ -1,6 +1,5 @@
 package reaction;
 
-import graphicsLib.G;
 import graphicsLib.Window;
 import music.UC;
 
@@ -10,76 +9,31 @@ import java.awt.event.MouseEvent;
 
 
 public class ShapeTrainer extends Window {
-    public static String UNKNOWN = "<- This shape name is currently unknown";
-    public static String ILLEGAL = "<- This shape name is illegal";
-    public static String KNOWN = "<- This shape name is currently known";
-    public static String curName = "";
-    public static String curState = ILLEGAL;
-    public static Shape.Prototype.List pList;
+    public static Shape.Trainer trainer = new Shape.Trainer();
 
     public ShapeTrainer() {
         super("ShapeTrainer", UC.WINDOW_WIDTH, UC.WINDOW_HEIGHT);
     }
 
-    @Override
-    public void paintComponent(Graphics g) {
-        G.fillBackground(g);
-        g.setColor(Color.BLACK);
-        g.drawString(curName, 600, 30);
-        g.drawString(curState, 700, 30);
-        g.setColor(Color.RED);
-        Ink.BUFFER.show(g);
-        if (pList != null) { pList.show(g); }
-    }
-
-    public void setState() {
-        pList = null;
-        curState = (curName.equals("") || curName.equals("DOT")) ? ILLEGAL : UNKNOWN;
-        if (curState == UNKNOWN) {
-            if (Shape.DB.containsKey(curName)) {
-                curState = KNOWN;
-                pList = Shape.DB.get(curName).prototypes;
-            }
-        }
-    }
+    public void paintComponent(Graphics g) { trainer.show(g); }
 
     public void keyTyped(KeyEvent ke) {
-        char c = ke.getKeyChar();
-        System.out.println("Typed: " + c);
-        curName = (c == ' ' || c == 0x0D || c == 0x0A) ? "" : curName + c;
-        setState();
-        if (c == 0x0D || c == 0x0A) { Shape.saveShapeDB();}
+        trainer.keyTyped(ke.getKeyChar());
         repaint();
     }
 
     public void mousePressed(MouseEvent me) {
-        Ink.BUFFER.dn(me.getX(), me.getY());
+        trainer.dn(me.getX(), me.getY());
         repaint();
     }
 
     public void mouseDragged(MouseEvent me) {
-        Ink.BUFFER.drag(me.getX(), me.getY());
+        trainer.drag(me.getX(), me.getY());
         repaint();
     }
 
     public void mouseReleased(MouseEvent me){
-        if (curState != ILLEGAL) {
-            Ink ink = new Ink();
-            Shape.Prototype prototype;
-            if (pList == null) {
-                Shape s = new Shape(curName);
-                Shape.DB.put(curName, s);
-                pList = s.prototypes;
-            }
-            if (pList.bestDist(ink.norm) < UC.NO_MATCH_DIST) {
-                prototype = Shape.Prototype.List.bestMatch;
-                prototype.blend(ink.norm);
-            } else {
-                prototype = new Shape.Prototype();
-                pList.add(prototype);
-            }
-            setState();
-        }
+        trainer.up(me.getX(), me.getY());
         repaint();
     }
 }

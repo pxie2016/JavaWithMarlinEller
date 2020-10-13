@@ -47,7 +47,7 @@ public class PaintInk extends Window {
             proto = plist.bestMatch;
             proto.blend(ink.norm);
         } else {
-            proto = new Shape.Prototype();
+            proto = new Shape.Prototype(ink.norm);
             plist.add(proto);
         }
         ink.norm = proto;
