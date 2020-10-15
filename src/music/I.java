@@ -1,5 +1,7 @@
 package music;
 
+import reaction.Gesture;
+
 import java.awt.*;
 
 public interface I {
@@ -14,5 +16,12 @@ public interface I {
         void up(int x, int y);
     }
     interface Show {
-        void show(Graphics g); }
+        void show(Graphics g);
+    }
+    interface Act {
+        void act(Gesture g);
+    }
+    interface React extends Act {
+        int bid(Gesture g);
+    }
 }

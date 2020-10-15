@@ -13,6 +13,7 @@ public class PaintInk extends Window {
 
     public static Ink.List inkList = new Ink.List();
     public static Shape.Prototype.List plist = new Shape.Prototype.List();
+    public static String recognized = "";
 
     public PaintInk() {
         super("PaintInk", UC.WINDOW_WIDTH, UC.WINDOW_HEIGHT);
@@ -30,6 +31,7 @@ public class PaintInk extends Window {
             g.drawString("Dist:" + dist, 600, 60);
         }
         plist.show(g);
+        g.drawString(recognized, 700, 40);
     }
 
     @Override
@@ -41,6 +43,8 @@ public class PaintInk extends Window {
     @Override
     public void mouseReleased(MouseEvent me) {
         Ink ink = new Ink();
+        Shape s = Shape.recognize(ink);
+        recognized = "Recognized: " + ((s != null) ? s.name : "Unrecognized");
         Shape.Prototype proto;
         inkList.add(new Ink());
         if (plist.bestDist(ink.norm) < UC.NO_MATCH_DIST) {
