@@ -18,9 +18,7 @@ public class ReactionTest extends Window {
     public ReactionTest() {
         super("Simple reaction test", UC.WINDOW_WIDTH, UC.WINDOW_HEIGHT);
         Reaction.initialReactions.addReaction(new Reaction("SW-SW") {
-            @Override
             public int bid(Gesture g) { return 0; }
-            @Override
             public void act(Gesture g) { new Box(g.vs); }
         });
     }
@@ -44,11 +42,39 @@ public class ReactionTest extends Window {
         public Box(G.VS vs) {
             super("Back");
             this.vs = vs;
+            addReaction(new Reaction("S-S") { // Delete box
+                public int bid(Gesture g) {
+                    int x = g.vs.xM(), y = g.vs.yL();
+                    if (Box.this.vs.hit(x, y)) {
+                        return Math.abs(x - Box.this.vs.xM());
+                    } else {
+                        return UC.NO_BID;
+                    }
+                }
+
+                public void act(Gesture g) {
+                    Box.this.delete(); // Compound "this"
+                }
+            });
+
+            addReaction(new Reaction("DOT") { // Change color
+                public int bid(Gesture g) {
+                    int x = g.vs.xM(), y = g.vs.yM();
+                    if (Box.this.vs.hit(x, y)) {
+                        return Math.abs(x - Box.this.vs.xM()) + Math.abs(y - Box.this.vs.yM());
+                    } else {
+                        return UC.NO_BID;
+                    }
+                }
+
+                public void act(Gesture g) {
+                    Box.this.c = G.rndColor(); // Compound "this"
+                }
+            });
         }
 
-        public void show(Graphics g) {
-            vs.fill(g, c);
-        }
+        public void show(Graphics g) { vs.fill(g, c); }
+
     }
 
 }
