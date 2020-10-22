@@ -108,6 +108,6 @@ public class Ink implements I.Show {
         public void up(int x, int y) {}
 
         @Override
-        public void show(Graphics g) { drawN(g, n); bbox.draw(g); }
+        public void show(Graphics g) { drawN(g, n); } // bbox.draw(g); }
     }
 }
