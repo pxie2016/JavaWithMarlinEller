@@ -19,11 +19,13 @@ public class Sys extends Mass {
 
     public void addNewStaff(int iStaff) { staffs.add(new Staff(this, iStaff)); }
     public int yTop() { return page.sysTop(iSys); }
+    public int yBot() { return staffs.get(staffs.size() - 1).yBot(); }
 
     // --- Sys Format
     public static class Fmt extends ArrayList<Staff.Fmt> {
 
         public ArrayList<Integer> staffOffsets = new ArrayList<>();
+        public int maxH = 8;
 
         public void addNew(int yOff) {
             add(new Staff.Fmt());

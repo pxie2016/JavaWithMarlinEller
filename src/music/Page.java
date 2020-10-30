@@ -24,7 +24,7 @@ public class Page extends Mass {
         int mm = 50;
         xMargin = new G.LoHi(mm, UC.WINDOW_WIDTH - mm);
         yMargin = new G.LoHi(y, UC.WINDOW_HEIGHT - mm);
-        
+
         Reaction.initialReactions.get(0).disable();
         addNewStaffFmtToSysFmt(y);
         addNewSys();
