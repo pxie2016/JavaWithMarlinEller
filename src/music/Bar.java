@@ -44,6 +44,24 @@ public class Bar extends Mass {
                 Bar.this.cycleType();
             }
         });
+
+        addReaction(new Reaction("DOT") { // Dot the bar lines
+            public int bid(Gesture g) {
+                int x = g.vs.xM(), y = g.vs.yM();
+                if (y < Bar.this.sys.yTop() || y > Bar.this.sys.yBot()) { return UC.NO_BID; }
+                int dist = Math.abs(x - Bar.this.x);
+                if (dist > 3 * Page.PAGE.sysFmt.maxH) { return UC.NO_BID; }
+                return dist;
+            }
+
+            public void act(Gesture g) {
+                if (g.vs.xM() < Bar.this.x) {
+                    Bar.this.toggleLeft();
+                } else {
+                    Bar.this.toggleRight();
+                }
+            }
+        });
     }
 
     public void show(Graphics g) {
@@ -68,6 +86,7 @@ public class Bar extends Mass {
         if (barType >= 4) {
             if ((barType & LEFT) != 0) { thinBar(g, x - 2 * H, y1, y2); wings(g, x - 2 * H, y1, y2, -H, H); }
             if ((barType & RIGHT) != 0) { thinBar(g, x + H, y1, y2); wings(g, x + H, y1, y2, H, H); }
+            fatBar(g, x - H, y1, y2, H);
         }
     }
 
@@ -90,7 +109,7 @@ public class Bar extends Mass {
             g.fillOval(x - 3*H, top + 11*H/4, H/2, H/2);
             g.fillOval(x - 3*H, top + 19*H/4, H/2, H/2);
         }
-        if ((barType & LEFT) != 0) {
+        if ((barType & RIGHT) != 0) {
             g.fillOval(x + 3*H/2, top + 11*H/4, H/2, H/2);
             g.fillOval(x + 3*H/2, top + 19*H/4, H/2, H/2);
         }

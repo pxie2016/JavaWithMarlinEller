@@ -2,6 +2,7 @@ package sandbox;
 
 import graphicsLib.G;
 import graphicsLib.Window;
+import music.Glyph;
 import music.Page;
 import music.UC;
 import reaction.Gesture;
