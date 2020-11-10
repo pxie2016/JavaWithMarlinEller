@@ -26,16 +26,30 @@ public class Rest extends Duration {
             }
         });
 
-        addReaction(new Reaction("W-W") {
-            @Override
+        addReaction(new Reaction("W-W") { // remove a flag
+
             public int bid(Gesture g) {
                 int y = g.vs.yM(), x1 = g.vs.xL(), x2 = g.vs.xH(), x = Rest.this.time.x;
                 if (x1 > x || x2 < x) { return UC.NO_BID; }
                 return Math.abs(y - Rest.this.staff.yLine(4));
             }
-            @Override
+
             public void act(Gesture g) {
                 Rest.this.decFlag();
+            }
+        });
+
+        addReaction(new Reaction("DOT") { // Aug. dot
+
+            public int bid(Gesture g) {
+                int xr = Rest.this.time.x, yr = Rest.this.y();
+                int x = g.vs.xM(), y = g.vs.yM();
+                if (x < xr || x > xr + 40 || y < yr - 40 || y > yr + 40) { return UC.NO_BID; }
+                return Math.abs(x - xr) + Math.abs(y - yr);
+            }
+
+            public void act(Gesture g) {
+                Rest.this.cycleDot();
             }
         });
     }
@@ -49,6 +63,11 @@ public class Rest extends Duration {
         if (nFlag == 2) { Glyph.REST_2F.showAt(g, h, time.x, y); }
         if (nFlag == 3) { Glyph.REST_3F.showAt(g, h, time.x, y); }
         if (nFlag == 4) { Glyph.REST_4F.showAt(g, h, time.x, y); }
+
+        int off = UC.REST_AUG_DOT_OFFSET, sp = UC.AUG_DOT_SPACING;
+        for (int i = 0; i < nDot; i++) {
+            g.fillOval(time.x + off + i * sp, y - 3 * h / 2, h * 2 / 3, h * 2 / 3);
+        }
     }
 
     public int y() { return staff.yLine(line); }
