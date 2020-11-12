@@ -1,6 +1,7 @@
 package music;
 
 import java.awt.*;
+import java.util.Collections;
 
 public class Stem extends Duration {
 
@@ -41,5 +42,29 @@ public class Stem extends Duration {
 
     public void deleteStem() {
         deleteMass();
+    }
+
+    public void setWrongSize() {
+        Collections.sort(heads);
+
+        int i, last, next;
+        if (isUp) {
+            i = heads.size() - 1;
+            last = 0;
+            next = -1;
+        } else {
+            i = 0;
+            last = heads.size() - 1;
+            next = 1;
+        }
+
+        Head pH = heads.get(i);
+        pH.wrongSide = false;
+        while (i != last) {
+            i += next;
+            Head nH = heads.get(i);
+            nH.wrongSide = (pH.staff == nH.staff && Math.abs(nH.line - pH.line) <= 1) && !pH.wrongSide;
+            pH = nH;
+        }
     }
 }

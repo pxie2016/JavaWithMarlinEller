@@ -15,7 +15,7 @@ public class UC {
     public static final int NO_BID = 10000;
     public static final int BAR_TO_MARGIN_SNAP = 30;
     public static final int SNAP_TIME = 30;
-    public static final int REST_AUG_DOT_OFFSET = 20;
+    public static final int REST_AUG_DOT_OFFSET = 25;
     public static final int AUG_DOT_SPACING = 10;
 
     public static final Color INK_COLOR = Color.BLACK;

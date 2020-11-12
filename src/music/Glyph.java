@@ -14,6 +14,7 @@ public class Glyph {
     public static Glyph CLEF_TAB = new Glyph((char)61581, 10, -1, 1);
     public static Glyph CLEF_G8 = new Glyph((char)61639, 16, -3, 1);
 
+    public static Glyph HEAD_WHOLE = new Glyph((char)61484, 16, 0, 7);
     public static Glyph HEAD_HALF = new Glyph((char)61485, 16, 0, 7);
     public static Glyph HEAD_Q = new Glyph((char)61486, 16, 0, 7);
 
