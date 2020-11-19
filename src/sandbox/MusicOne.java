@@ -29,11 +29,17 @@ public class MusicOne extends Window {
         });
     }
 
+    static int[] xPoly = {100, 200, 200, 100};
+    static int[] yPoly = {50, 70, 80, 60};
+    static Polygon poly = new Polygon(xPoly, yPoly, 4);
+
     public void paintComponent(Graphics g) {
         G.fillBackground(g);
         Layer.ALL.show(g);
         g.setColor(Color.BLACK);
         Ink.BUFFER.show(g);
+        g.setColor(Color.CYAN);
+        g.fillPolygon(poly);
     }
 
     public void mousePressed(MouseEvent me) { Gesture.AREA.dn(me.getX(), me.getY()); repaint(); }

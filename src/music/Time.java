@@ -30,6 +30,8 @@ public class Time {
         if (s.heads.size() > 0) {
             s.setWrongSize();
         }
+
+        s.staff.sys.stems.add(s);
     }
 
     // --- List
